@@ -3,6 +3,7 @@ kind: Secret
 
 metadata:
   name: payment
+  namespace: roboshop
   labels:
     component: payment
     project: roboshop
