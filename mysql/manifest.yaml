@@ -45,7 +45,10 @@ spec:
     spec:
       containers:
         - name: mysql
-          image: mysql:8.0
+          image: shivapaturi01/mysql:v1
+          envFrom:
+          - secretRef:
+          ``  name: mysql
 
 ---
 apiVersion: v1
