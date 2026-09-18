@@ -1,0 +1,75 @@
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: shipping
+  namespace: roboshop
+  labels:
+    component: shipping
+    project: roboshop
+    tier: app
+data:
+  CART_ENDPOINT: "cart:8080" 
+  DB_HOST: "mysql"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: shipping
+  namespace: roboshop
+  # Deployment labels
+  labels:
+    component: shipping
+    project: roboshop
+    tier: app
+
+spec:
+  replicas: 1
+
+  # These labels are used by ReplicaSet to select Pods.
+  # They must match the Pod template labels.
+  selector:
+    matchLabels:
+      component: shipping
+      project: roboshop
+      tier: app
+
+  # Pod definition
+  template:
+    metadata:
+      labels:
+        component: shipping
+        project: roboshop
+        tier: app
+
+    spec:
+      containers:
+        - name: shipping
+          image: shivapaturi01/shipping:v1
+          envFrom:
+          - configMapRef:
+              name: shipping
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: shipping
+  namespace: roboshop
+  labels:
+      component: shipping
+      project: roboshop
+      tier: app
+
+spec:
+  selector:
+      component: shipping
+      project: roboshop
+      tier: app
+
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
