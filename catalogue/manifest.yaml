@@ -49,8 +49,8 @@ spec:
         - name: catalogue
           image: shivapaturi01/catalogue:v1
           envFrom:
-          - ConfigMapRef:
-              nam: catalogue
+          - configMapRef:
+              name: catalogue
 
 ---
 apiVersion: v1
