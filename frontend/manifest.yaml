@@ -1,0 +1,76 @@
+# apiVersion: v1
+# kind: ConfigMap
+
+# metadata:
+#   name: frontend
+#   namespace: roboshop
+#   labels:
+#     component: frontend
+#     project: roboshop
+#     tier: web
+# data:
+#   CART_ENDPOINT: "cart:8080" 
+#   DB_HOST: "mysql"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: frontend
+  namespace: roboshop
+  # Deployment labels
+  labels:
+    component: frontend
+    project: roboshop
+    tier: web
+
+spec:
+  replicas: 1
+
+  # These labels are used by ReplicaSet to select Pods.
+  # They must match the Pod template labels.
+  selector:
+    matchLabels:
+      component: frontend
+      project: roboshop
+      tier: web
+
+  # Pod definition
+  template:
+    metadata:
+      labels:
+        component: frontend
+        project: roboshop
+        tier: web
+
+    spec:
+      containers:
+        - name: frontend
+          image: shivapaturi01/frontend:v1
+          # envFrom:
+          # - configMapRef:
+          #     name: frontend
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: roboshop
+  labels:
+      component: frontend
+      project: roboshop
+      tier: web
+
+spec:
+  type: LoadBalancer
+  selector:
+      component: frontend
+      project: roboshop
+      tier: web
+
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
