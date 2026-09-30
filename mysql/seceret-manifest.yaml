@@ -1,6 +1,5 @@
 apiVersion: apps/v1
 kind: Deployment
-
 metadata:
   name: mysql
   namespace: roboshop
@@ -9,10 +8,8 @@ metadata:
     component: mysql
     project: roboshop
     tier: database
-
 spec:
   replicas: 1
-
   # These labels are used by ReplicaSet to select Pods.
   # They must match the Pod template labels.
   selector:
@@ -20,7 +17,6 @@ spec:
       component: mysql
       project: roboshop
       tier: database
-
   # Pod definition
   template:
     metadata:
@@ -41,7 +37,7 @@ spec:
           name: mysql-secret
       initContainers:
       - name: fetch-secret
-        image: amazon/awscli
+        image: amazon/aws-cli
         command:
           - sh
           - -c
