@@ -30,9 +30,9 @@ spec:
       - name: mysql-secret
         emptyDir: {}
       containers:
-        - name: mysql
-          image: nginx
-      volumeMounts:
+      - name: mysql
+        image: nginx
+        volumeMounts:
         - mountPath: /tmp
           name: mysql-secret
       initContainers:
@@ -62,9 +62,9 @@ metadata:
       tier: database
 spec:
   selector:
-      component: mysql
-      project: roboshop
-      tier: database
+    component: mysql
+    project: roboshop
+    tier: database
   ports:
     - protocol: TCP
       port: 3306
