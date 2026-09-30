@@ -3,21 +3,20 @@ kind: Deployment
 metadata:
   name: mysql
   namespace: roboshop
-  # Deployment labels
+  # deployment labels
   labels:
     component: mysql
     project: roboshop
     tier: database
 spec:
   replicas: 1
-  # These labels are used by ReplicaSet to select Pods.
-  # They must match the Pod template labels.
+  # These are the labels replica set use to create pod replicas, this should match pod labels
   selector:
     matchLabels:
       component: mysql
       project: roboshop
       tier: database
-  # Pod definition
+  # This is pod definition
   template:
     metadata:
       labels:
@@ -25,7 +24,7 @@ spec:
         project: roboshop
         tier: database
     spec:
-      serviceAccountName: roboshop-mysql-secret-reader
+      serviceAccount: roboshop-mysql-secret-reader
       volumes:
       - name: mysql-secret
         emptyDir: {}
@@ -40,14 +39,10 @@ spec:
       - name: fetch-secret
         image: amazon/aws-cli
         command:
-          - sh
-          - -c
-          - |
-            aws secretsmanager get-secret-value \
-              --secret-id roboshop/mysql/password \
-              --query SecretString \
-              --output text \
-              --region us-east-1 | jq -r '.MYSQL_ROOT_PASSWORD' > /tmp/mysql_root_password.txt
+        - sh
+        - -c
+        - |
+            aws secretsmanager get-secret-value --secret-id roboshop/mysql/password --query SecretString --output text | jq -r .MYSQL_ROOT_PASSWORD > /tmp/mysql_root_password.txt
         volumeMounts:
         - mountPath: /tmp
           name: mysql-secret
@@ -58,15 +53,15 @@ metadata:
   name: mysql
   namespace: roboshop
   labels:
-      component: mysql
-      project: roboshop
-      tier: database
+    component: mysql
+    project: roboshop
+    tier: database
 spec:
   selector:
     component: mysql
     project: roboshop
     tier: database
   ports:
-    - protocol: TCP
-      port: 3306
-      targetPort: 3306
+  - protocol: TCP
+    port: 3306 # service port
+    targetPort: 3306 # container port
