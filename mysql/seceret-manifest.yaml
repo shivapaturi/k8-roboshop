@@ -50,7 +50,6 @@ spec:
         volumeMounts:
         - mountPath: /tmp
           name: mysql-secret
-
 ---
 apiVersion: v1
 kind: Service
@@ -61,13 +60,11 @@ metadata:
       component: mysql
       project: roboshop
       tier: database
-
 spec:
   selector:
       component: mysql
       project: roboshop
       tier: database
-
   ports:
     - protocol: TCP
       port: 3306
