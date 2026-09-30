@@ -31,7 +31,8 @@ spec:
         emptyDir: {}
       containers:
       - name: mysql
-        image: nginx
+        image: shivapaturi01/mysql:v2
+        imagePullPolicy: Always
         volumeMounts:
         - mountPath: /tmp
           name: mysql-secret
