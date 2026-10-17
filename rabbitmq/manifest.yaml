@@ -3,6 +3,7 @@ kind: Secret
 
 metadata:
   name: rabbitmq
+  namespace: roboshop
   labels:
     component: rabbitmq
     project: roboshop
